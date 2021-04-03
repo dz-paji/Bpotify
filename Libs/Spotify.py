@@ -3,16 +3,15 @@ import json
 from decouple import config
 from spotipy.oauth2 import SpotifyOAuth
 
-uid = config('client_id')
-secret = config('client_secret')
-uri = config('redirect_uri')
-
 # speficy the permission needed
 scope = 'user-modify-playback-state'
 
 
 class Bot():
-    def __init__(self, id, secret, uri):
+    def __init__(self):
+        id = config('client_id')
+        secret = config('client_secret')
+        uri = config('redirect_uri')
         scope = 'user-modify-playback-state'
         self.spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope,client_id=id, client_secret=secret, redirect_uri=uri))
 
@@ -36,10 +35,10 @@ class Bot():
         
         if isFound == True:
             self.spotify.add_to_queue(id)
-            return True
+            return 200
         else:
-            return False
+            return 404
 
 if __name__ == '__main__':
-        This = Bot(id=uid, secret=secret, uri=uri)
+        This = Bot()
         This.requestSong('what you know')
