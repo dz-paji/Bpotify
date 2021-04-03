@@ -1,6 +1,7 @@
 from bilibili_api.live import LiveDanmaku
 from decouple import config
 import Spotify
+import os
 
 # parse the incoming msg
 def parseMsg(msg):
@@ -15,8 +16,7 @@ def command(msg):
     try:
         # if the incoming message is a song request
         if msg[:2] == '点歌':
-            status = Bot.requestSong(msg[3:])
-            print(status)
+            Bot.requestSong(msg[3:])
     except:
         pass
 
@@ -32,4 +32,11 @@ thisRoom.add_event_handler(event_name='DANMU_MSG', func=parseMsg)
 
 
 if __name__ == '__main__':
+    try:
+        os.mkdirs(config('cache_dir'))
+        queue = open(cacheDir+'\cache.txt', 'w')
+        queue.close()
+    except:
+        pass
+
     thisRoom.connect()

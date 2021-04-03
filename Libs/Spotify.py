@@ -1,11 +1,12 @@
 import spotipy
-import json
 from decouple import config
 from spotipy.oauth2 import SpotifyOAuth
+from time import sleep
 
 # speficy the permission needed
 scope = 'user-modify-playback-state'
 
+cacheDir = config('cache_dir')
 
 class Bot():
     def __init__(self):
@@ -35,10 +36,15 @@ class Bot():
         
         if isFound == True:
             self.spotify.add_to_queue(id)
-            return 200
+            print('200')
+            queue = open(cacheDir+'\cache.txt', 'a', encoding='utf8')
+            queue.write('歌曲已加入播放列表')
+            sleep(10)
+            del queue[0]
+            queue.close()
         else:
-            return 404
+            print('404')
 
 if __name__ == '__main__':
         This = Bot()
-        This.requestSong('what you know')
+        This.requestSong('life goes on')
